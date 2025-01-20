@@ -72,7 +72,7 @@ const Cards = () => {
                   {contextHolder}
                   <Button
                     type="primary"
-                    className=" mt-3 font-medium text-white hover:underline"
+                    className=" mt-3 font-medium text-white"
                     onClick={() => {
                       addToCart({
                         id: card._id,

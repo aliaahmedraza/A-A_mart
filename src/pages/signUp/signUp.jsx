@@ -123,10 +123,9 @@ const SignupPage = () => {
           )}
         </Formik>
 
-        {/* Login Link */}
         <p className="text-center mt-4 text-gray-600">
           Already have an account?
-          <a href="/login" className="text-blue-500 ml-1 hover:underline">
+          <a href="/" className="text-blue-500 ml-1 hover:underline">
             Login
           </a>
         </p>

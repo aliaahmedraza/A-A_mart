@@ -1,47 +1,71 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import "./searchBox.css";
-import { Empty } from "antd";
 
 function SearchBox() {
+  const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const cities = [
-    "Laptop",
-    "Perfume",
-    "Shirts",
-    "Cloths",
-    "Belt",
-    "HandFree",
-    "Ear Buds",
-    "Tabs",
-    "Body spray",
-    "Mens Garments",
-    "Underewear",
-    "Rings",
-  ];
+  const [isLoading, setIsLoading] = useState(false);
+
+  const debounce = (func, delay) => {
+    let timer;
+    return (args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => func(args), delay);
+    };
+  };
+  const fetchSuggestions = async (query) => {
+    if (query.length === 0) {
+      setSuggestions([]);
+      return;
+    }
+    setIsLoading(true);
+
+    try {
+      const response = await axios.get("http://localhost:3002/search", {
+        params: { title: query }, 
+      });
+
+      setSuggestions(response.data);
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      setSuggestions([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  
+  const debouncedFetchSuggestions = debounce(fetchSuggestions, 500);
+
 
   const handleChange = (e) => {
-    const value = e.target.value;
+    const query = e.target.value;
+    setSearchQuery(query); 
+    debouncedFetchSuggestions(query); 
+  };
 
-    if (value.length > 0) {
-      const filteredSuggestions = cities.filter((city) =>
-        city.toLowerCase().includes(value.toLowerCase())
-      );
-      setSuggestions(filteredSuggestions);
-    } else {
-      setSuggestions(<Empty/>);
-    }
+  const handleBlur = () => {
+    setTimeout(() => {
+      setSuggestions([]);
+    }, 200);
   };
 
   return (
     <div className="flex flex-col mt-2 search-container h-10 relative">
       <input
         type="text"
-        className="search-box rounded-lg text-sm pl-2 h-52 w-[70rem]"
+        className="search-box rounded-lg text-sm pl-2 h-12 w-[70rem]"
         placeholder="Search products"
+        value={searchQuery}
         onChange={handleChange}
+        onBlur={handleBlur}
       />
-      {suggestions.length > 0 && (
-        <div className="suggestions-box rounded-lg bg-[#F5F5F5] shadow-md mt-12 absolute z-10 ">
+
+      {isLoading && <div className="loading-spinner">Loading...</div>}
+
+      {suggestions.length > 0 ? (
+        <div className="suggestions-box rounded-lg bg-[#F5F5F5] shadow-md mt-10 absolute z-10 w-full">
           {suggestions.map((suggestion, index) => (
             <div
               key={index}
@@ -51,9 +75,13 @@ function SearchBox() {
             </div>
           ))}
         </div>
-      )}
+      ) : searchQuery && !isLoading ? (
+        <div>No results found</div>
+      ) : null}
     </div>
   );
 }
 
 export default SearchBox;
+
+

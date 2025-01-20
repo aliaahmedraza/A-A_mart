@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Button,message} from "antd";
+import { Button} from "antd";
 import "./header.css";
 import SearchBox from "../searchBox/searchBox.jsx";
 import { useNavigate } from "react-router-dom";
@@ -9,19 +9,22 @@ import Cookies from "js-cookie";
 
 const Header = () => {
   const { cartItems } = useContext(CartContext);
-  const [messageApi, contextHolder] = message.useMessage();
-  const success = () => {
-    messageApi.open({
-      type: "success",
-      content: "LogOut Successfully",
-      duration:1
-    });
-  };
+
   const initialValue = 0;
   const order = cartItems.reduce(  (accumulator, currentItem) => 
   accumulator + currentItem.quantity,
       initialValue)
   const navigate = useNavigate();
+   const handleLogout = async () => {
+     try {
+       alert("LogOut Successfully");
+       Cookies.remove("token");
+       navigate("/");
+     } catch (error) {
+       console.error("Login error:", error.message);
+       alert("Error during LogOut. Please try again.");
+     } 
+   };
 
   return (
     <div className="flex bg-[#666363] justify-between p-3 w-full fixed top-0 left-0">
@@ -38,16 +41,11 @@ const Header = () => {
         >
           LOGIN
         </Button> */}
-        {contextHolder}
         <Button
           type="text"
           className="header-button p-7 font-bold"
           id="btn"
-          onClick={() => {
-            navigate("/");
-            success();
-            Cookies.remove("token");
-          }}
+          onClick={handleLogout}
         >
           LOG-OUT
         </Button>
