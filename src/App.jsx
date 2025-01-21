@@ -7,7 +7,7 @@ const App = () => {
   return (
     <div>
       <Router>
-        <AllRoutes />
+        <AllRoutes/>
       </Router>
     </div>
   );
