@@ -11,6 +11,7 @@ import { CartProvider } from "../context/cartContext.js";
 import { setAuthenticated } from "../redux/slices/privateRouterSlice";
 import Cookies from "js-cookie";
 import {jwtDecode} from "jwt-decode";
+import OrderPage from "../pages/order/order.jsx";
 
 const PrivateRoute = () => {
   const isAuthenticated = useSelector(
@@ -51,11 +52,9 @@ const AllRoutes = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgetpassword" element={<ForgotPasswordPage />} />
         <Route path="/cart" element={<ShoppingCart />} />
+        <Route path="/order" element={<OrderPage />} />
         <Route path="/updatepassword/:token" element={<UpdatePasswordPage />} />
-        <Route
-          path="/dashboard"
-          element={<PrivateRoute/>} 
-        >
+        <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="" element={<Dashboard />} />
         </Route>
       </Routes>

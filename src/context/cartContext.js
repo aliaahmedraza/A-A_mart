@@ -25,10 +25,12 @@ const addToCart = (product) => {
       prev.map((item) => (item.id === id ? { ...item, quantity } : item))
     );
   };
-
+  const emptyCart = () => {
+    setCartItems([])
+  };
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, updateQuantity }}
+      value={{ cartItems, addToCart, removeFromCart, updateQuantity,emptyCart }}
     >
       {children}
     </CartContext.Provider>

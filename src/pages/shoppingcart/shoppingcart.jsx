@@ -85,13 +85,22 @@ const ShoppingCart = () => {
               ): ${subtotal.toFixed(2)}
             </h3>
           </div>
-          <Button
-            type="primary"
-            className="text-2xl font-bold mb-5 h-12"
-            onClick={() => navigate("/dashboard")}
-          >
-            Home
-          </Button>
+          <div className="flex justify-between">
+            <Button
+              type="primary"
+              className="text-2xl font-bold mb-5 h-12"
+              onClick={() => navigate("/dashboard")}
+            >
+              Home
+            </Button>
+            <Button
+              type="primary"
+              className="text-2xl font-bold mb-5 h-12"
+              onClick={() => navigate("/order")}
+            >
+              Place Order
+            </Button>
+          </div>
         </>
       )}
     </div>
